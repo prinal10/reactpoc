@@ -34,15 +34,16 @@ const alertStyles = (prop) => {
 };
 
 const LoginScreen = () => {
+    // console.log("in Login");
     const {login} = useAuth();
     const navigate = useNavigate();
     const onSubmit = async (values, submitProps) => {
         try {
             await login(values.username, values.password);
-            console.log(login);
-            navigate("/admin", {replace: true});
+            // console.log(login);
             submitProps.resetForm();
-            console.log(navigate);
+            navigate("/", {replace: true});
+            // console.log(navigate);
             //handle form submit here
         } catch (e) {
             //handle error

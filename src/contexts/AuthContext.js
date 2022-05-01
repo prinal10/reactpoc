@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import jwt_decode from "jwt-decode";
-import {useNavigate} from "react-router-dom";
 
 
 import authApi from "../api/auth/authApi";
@@ -12,26 +11,18 @@ export function useAuth() {
     return useContext(AuthContext);
 }
 
+const checkAndGetJwtDataFromLocalStorage = () => {
+    const localData = getDataFromLocalStorage("jwtToken");
+    if (!localData) {
+        return null;
+    }
+    return jwt_decode(localData);
+
+}
 //hoc
 export const AuthContextProvider = ({children}) => {
-
-        const [jwtData, setJwtData] = useState(null);
-        const navigate = useNavigate();
-
-
-        //useEffect
-        useEffect(() => {
-            const localData = getDataFromLocalStorage("jwtToken");
-            if (!localData) {
-                navigate("/login", {replace: true});
-                return;
-            }
-            setJwtData(jwt_decode(localData));
-            navigate("/", {replace: true});
-            //redirect to home page.
-
-        }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+        //console.log("in AuthContext");
+        const [jwtData, setJwtData] = useState(checkAndGetJwtDataFromLocalStorage());
 
         const login = async (username, password) => {
             //call authAPI
@@ -39,8 +30,8 @@ export const AuthContextProvider = ({children}) => {
             //set local storage data
             setJwtData(jwt_decode(data.access_token));
             // eslint-disable-next-line no-undef
-            setDataWithExpiry("jwtToken", data.access_token, 60000);
-            console.log(JSON.stringify(jwt_decode(data.access_token), null, 2));
+            setDataWithExpiry("jwtToken", data.access_token, 6000000);
+            //console.log(JSON.stringify(jwt_decode(data.access_token), null, 2));
 
         }
         const value = {jwtData, login};

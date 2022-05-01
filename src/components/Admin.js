@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Admin = () => {
+    // console.log("in Admin");
     return (
         <>
             <div>

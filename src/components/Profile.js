@@ -5,9 +5,9 @@ const Profile = () => {
     const {jwtData} = useAuth();
     return (
         <>
-            <div>
-                Hi {jwtData.userName}!
-            </div>
+            <h1>
+                Hi {jwtData.userName.toUpperCase()}!
+            </h1>
         </>
     );
 };
