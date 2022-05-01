@@ -8,6 +8,7 @@ import Admin from "./components/Admin";
 import Dashboard from "./components/Dashboard";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Profile from "./components/Profile";
+import NavBar from "./components/NavBar";
 
 function App() {
     // console.log("in App")
@@ -23,22 +24,23 @@ function App() {
                                and the one that dont.
                             */}
                             <Route element={<AuthenticatedRoute/>}>
-                                <Route path="/" element={<Dashboard/>}/>
-                                {/*AuthorizedRoutes are meant if user tries to hit url which they are not
+                                <Route element={<NavBar/>}>
+                                    <Route path="/" element={<Dashboard/>}/>
+                                    {/*AuthorizedRoutes are meant if user tries to hit url which they are not
                                    authorized to.
                                 */}
-                                <Route path="/admin" element={
-                                    <AuthorizedRoutes hasAnyScopes={["etrans:eligibilitiesEnabled"]}
-                                                      component={Admin}
-                                    />
-                                }/>
-                                <Route path="/profile" element={
-                                    <AuthorizedRoutes hasAnyScopes={["etrans:eligibilitiesEnabled"]}
-                                                      component={Profile}
-                                    />
-                                }/>
+                                    <Route path="/admin" element={
+                                        <AuthorizedRoutes hasAnyScopes={["etrans:eligibilitiesEnabled"]}
+                                                          component={Admin}
+                                        />
+                                    }/>
+                                    <Route path="/profile" element={
+                                        <AuthorizedRoutes hasAnyScopes={["etrans:eligibilitiesEnabled"]}
+                                                          component={Profile}
+                                        />
+                                    }/>
+                                </Route>
                             </Route>
-
                         </Routes>
                     </AuthContextProvider>
                 </Router>

@@ -1,12 +1,24 @@
 import React from 'react';
-import {Route} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
+import AuthorizedComponent from "./AuthorizedComponent";
 
 const NavBar = () => {
     return (
         <>
-            <Route>
-
-            </Route>
+            <div className="ui secondary pointing menu">
+                <Link to="/" className="item">
+                    Home
+                </Link>
+                <AuthorizedComponent hasAnyScopes={["etrans:eligibilitiesEnabled"]}>
+                    <Link to="/admin" className="item">
+                        Admin
+                    </Link>
+                </AuthorizedComponent>
+                <Link to="/profile" className="item">
+                    Profile
+                </Link>
+            </div>
+            <Outlet/>
         </>
     );
 };
