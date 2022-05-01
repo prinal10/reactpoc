@@ -3,16 +3,17 @@ import jwt_decode from "jwt-decode";
 
 
 import authApi from "../api/auth/authApi";
-import {getDataFromLocalStorage, setDataWithExpiry} from "../utils/localStorageUtils";
+import {getDataFromLocalStorage, removeDataFromLocalStorage, setDataWithExpiry} from "../utils/localStorageUtils";
 
 const AuthContext = React.createContext(null);
+const JWT_KEY = "jwtToken";
 
 export function useAuth() {
     return useContext(AuthContext);
 }
 
 const checkAndGetJwtDataFromLocalStorage = () => {
-    const localData = getDataFromLocalStorage("jwtToken");
+    const localData = getDataFromLocalStorage(JWT_KEY);
     if (!localData) {
         return null;
     }
@@ -30,11 +31,15 @@ export const AuthContextProvider = ({children}) => {
             //set local storage data
             setJwtData(jwt_decode(data.access_token));
             // eslint-disable-next-line no-undef
-            setDataWithExpiry("jwtToken", data.access_token, 6000000);
+            setDataWithExpiry(JWT_KEY, data.access_token, 6000000);
             //console.log(JSON.stringify(jwt_decode(data.access_token), null, 2));
 
-        }
-        const value = {jwtData, login};
+        };
+        const logout = async () => {
+            removeDataFromLocalStorage(JWT_KEY);
+            setJwtData(null);
+        };
+        const value = {jwtData, login, logout};
         return (
             <AuthContext.Provider value={value}>
                 {children}

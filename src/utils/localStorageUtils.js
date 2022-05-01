@@ -15,6 +15,10 @@ const setDataInLocalStorage = (key, value, ttl = null) => {
     return value;
 };
 
+export const removeDataFromLocalStorage = (key) => {
+    localStorage.removeItem(key);
+}
+
 export const getDataFromLocalStorage = (key) => {
     const itemStr = localStorage.getItem(key);
     if (!itemStr) {
